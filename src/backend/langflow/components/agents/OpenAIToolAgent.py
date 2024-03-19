@@ -3,7 +3,6 @@ from typing import List, Optional
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain.agents.agent import AgentExecutor
 from langchain.memory.token_buffer import ConversationTokenBufferMemory
-from langchain.prompts import SystemMessagePromptTemplate
 from langchain.schema.memory import BaseMemory
 from langchain.tools import Tool
 from langchain_core.prompts import (
@@ -11,6 +10,7 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
     PromptTemplate,
+    SystemMessagePromptTemplate,
 )
 from langchain_openai import ChatOpenAI
 
@@ -88,14 +88,13 @@ class OpenAIToolAgentComponent(CustomComponent):
             [
                 _system_message,
                 MessagesPlaceholder(variable_name=memory_key, optional=True),
-                HumanMessagePromptTemplate(
-                    prompt=PromptTemplate(input_variables=["input"], template="{input}")
-                ),
+                HumanMessagePromptTemplate.from_template("{input}"),
                 MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
 
         agent = create_openai_tools_agent(llm, tools, prompt)
+
         return AgentExecutor(
             agent=agent,
             tools=tools,  # type: ignore
