@@ -23,7 +23,7 @@ class OpenAIToolAgentComponent(CustomComponent):
     description: str = "Conversational Agent that can use OpenAI's tool calling API"
 
     def build_config(self):
-        openai_function_models = [
+        openai_tools_models = [
             "gpt-4-turbo-preview",
             "gpt-4-0125-preview",
             "gpt-4-1106-preview",
@@ -31,6 +31,7 @@ class OpenAIToolAgentComponent(CustomComponent):
             "gpt-3.5-turbo-0125",
             "gpt-3.5-turbo-1106",
         ]
+
         return {
             "tools": {"display_name": "Tools"},
             "memory": {"display_name": "Memory"},
@@ -38,8 +39,8 @@ class OpenAIToolAgentComponent(CustomComponent):
             "max_token_limit": {"display_name": "Max Token Limit"},
             "model_name": {
                 "display_name": "Model Name",
-                "options": openai_function_models,
-                "value": openai_function_models[0],
+                "options": openai_tools_models,
+                "value": openai_tools_models[0],
             },
             "code": {"show": False},
             "temperature": {
